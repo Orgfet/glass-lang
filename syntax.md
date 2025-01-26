@@ -283,6 +283,8 @@ func int main() {//main ist die ausnahme des Void parameters
     myFunction2(x,y);   //Hier kommt 30 raus a+b
     myVoid();           //Hier wird "Hallo Welt" ausgegeben
     noParameters();     //Hier wird "Marc" zurückgegeben
+    
+    return 0;
 }
 ```
 
@@ -321,4 +323,208 @@ float grade;
 Student s1 = {"Mattes", 20, 4.6}; //Stundenten erstellen
 print("s1.name");                 //Ausgeben vom Name (Mattes)
 s1.age = 21;                      //Alter von 20 auf 21 setzen
+```
+
+## Kapitel 11 Enums
+```
+define Enum as Weekday {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+} 
+
+func int Main() {
+    Weekday w = MONDAY; 
+
+    print(w);               //MONDAY
+    print(asOrdinal(w));    //0
+        
+    return 0;
+
+}
+```
+
+## Kapitel 12 Interfaces .gli (Glass Interface)
+```
+@interface "Interface1" //Namen des Interfaces festlegen
+
+struct Person {
+    str name;
+    int age;
+}
+
+void eat (void);
+
+void sleep(void) {
+    print("zzz");
+}
+
+
+// In der Glass file:
+
+#import Interface1.gli;
+
+
+@Overide
+void eat(void) {
+    print("Lecker!"); //Gibt jetzt lecker aus
+}
+
+
+int main() {
+    
+    eat(); //Gibt die überschiebene Methode aus "Lecker!"
+    sleep(); //Gibt wie im Interface definiert "zzz" aus
+    
+    Person p1 = {"Mattes", 21};
+    return 0;
+}
+```
+
+## Kapitel 13 Importe/Projekte mir mehreren Dateien
+```
+#import dateiname.gli/glass //mit "#import" werden .gli (Glass Interface) oder .glass (Glass Code datein) importiert.
+//*Mann kann in Interfaces und in Code datein importieren man muss aber aufpassen eine datei nicht 2mal zu importieren!
+   Wenn man eine .glass datei importiert mann kan die funktionen aufrufen aber man kann die nicht mit @Overide 
+   Überschreiben. 
+*/
+```
+```
+Projekt Struktur:
+[root]
+ ├─[src]
+ │  │
+ │  └─ Interface.gli
+ │  └─ Main.glass
+ │ 
+ │
+ └─[test]
+      └─ test.glf //(= Glass Forge)
+```
+``Interface.gli:``
+```
+@Interface "Interface"
+
+#import glassio.gll //(= Glass Library)
+
+final int NUM = 20;
+
+void hello (void) {
+    print("hello");
+}
+```
+``Main.glass:``
+```
+#import Interface.gli; //Importiert "Interface.gli" und "glassio.gll"
+
+int Main () {
+    hello(); //printed "Hello"
+    print(NUM); //printed "20"
+}
+```
+
+## Kapitel 14 Type Casting
+```
+float fnum = 1.5;
+str words = "2";
+int nnum;
+int wordsnum;
+
+wordsnum = word: int; //da kommt 2 raus
+
+nnum = fnum: int; // Da kommt 1 raus
+nnum = fnum: round(int); //Da kommt dann 2 raus er rundet auf
+```
+### Das schema ist:
+``newvar = orgvar: newtype;``
+### ``:`` Muss sich direkt an der orgvar befinden.
+
+
+## Kapitel 15 Macros
+```
+//*
+    Macros funkten wie in c
+    mit "#define" gibt man an das man ein Macro erstellen möchte
+    danach kommt der Name des Macros und der wert. Bei Macros braucht mein kein ";" am ende
+*/
+#define NAMEDESMARCROS = wert
+```
+
+## Kapitel 16 Type-aliases
+```
+//*
+    Um einen Typ Alias zu erstellen muss man ähnlich wie bei Enums "define" benutzen
+    dann gibt man an das es sich um einen "aliass" handelt und danach den Namen des "aliass" und was ihn ausmacht.
+*/
+define aliass as Name char[20];
+
+// Aliasse für Aliasse sind möglich
+define aliass as Vorname Name;
+```
+
+## Kapitel 17 Operant Grouping
+
+``Rangliste und  Assoziativität``
+```
+# 1 höheste Priorität
+    Postfix: expr++, expr-- (Increment/Decrement
+    L zur R
+
+# 2 Unäre Operatoren
+    Präsix: ++expr, --expr, +, -, ~, !, TypeCast
+    R zur L
+
+# 3 Muliplikation/Division/Modulo
+    *, /, %
+    L zu R
+
+# 4 Bit Shifting
+    << , >>
+    R zu R
+
+# 5 Vergleich
+    <, <=, > ,>=, ==, !=
+    L zu R
+
+# 6 Bitwise AND
+    &
+    L zu R
+
+# 7 Bitwise OR
+    |
+    L zu R
+
+# 8 Logic AND
+    &&
+    L zu R
+
+# 9 Logic OR
+    ||
+    L zu R
+
+# 10 Tenär
+    ? :
+    R zu L
+
+# 11 Zuweisungen
+    =, +=, -=. *=. /=. %=
+    L zu R
+
+# 12 Komma
+    ,
+    L zu R
+```
+
+## Kapitel 18 Listen und Sets
+```
+int liste[10];
+
+add_to_list(10);
+print_list(); // Gibt 10 aus
+
+int set[10];
+add_to_set(40);
+add_to_set(40); //Duplikat wird ignoriert
+if(contains_in_set(40) {
+    print(hehe);
+}
+print_set(); //Gibt 40 aus
 ```
